@@ -13,8 +13,11 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.eontecnologia.eonlog.domain.exception.NegocioException;
 
 import lombok.AllArgsConstructor;
 
@@ -44,6 +47,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		error.setTitulo("Um ou mais campos inválidos, preencha corretamente e tente novamente");
 		error.setCampos(campos);
 		
-		return super.handleExceptionInternal(ex, error, headers, status, request);
-	}	
+		return handleExceptionInternal(ex, error, headers, status, request);
+	}
+	
+	@ExceptionHandler(NegocioException.class)
+	public ResponseEntity<Object> handleNegocio(NegocioException ex, WebRequest request){
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		Error error = new Error();
+		error.setStatus(status.value());
+		error.setDataHora(LocalDateTime.now());
+		error.setTitulo(ex.getMessage());
+		
+		return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
+	}
+	
 }
