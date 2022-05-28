@@ -12,19 +12,20 @@ import com.eontecnologia.eonlog.domain.service.SolicitacaoEntregaService;
 
 import lombok.AllArgsConstructor;
 
+import javax.validation.Valid;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/entregas")
 public class EntregaController {
 	
 	private SolicitacaoEntregaService solicitacaoEntregaService;
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Entrega solicitar(@RequestBody Entrega entrega) {
-		
+	public Entrega solicitar(@Valid @RequestBody Entrega entrega) {
 		return solicitacaoEntregaService.solicitar(entrega);
-		
+		//Teste dev tools.
 	}
 
 }
