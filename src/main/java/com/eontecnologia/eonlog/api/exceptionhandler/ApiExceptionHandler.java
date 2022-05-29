@@ -1,9 +1,7 @@
 package com.eontecnologia.eonlog.api.exceptionhandler;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.eontecnologia.eonlog.domain.exception.NegocioException;
+import lombok.AllArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
@@ -17,9 +15,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.eontecnologia.eonlog.domain.exception.NegocioException;
-
-import lombok.AllArgsConstructor;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -43,7 +42,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		Error error = new Error();
 		error.setStatus(status.value());
-		error.setDataHora(LocalDateTime.now());
+		error.setDataHora(OffsetDateTime.now());
 		error.setTitulo("Um ou mais campos inválidos, preencha corretamente e tente novamente");
 		error.setCampos(campos);
 		
@@ -56,7 +55,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 		
 		Error error = new Error();
 		error.setStatus(status.value());
-		error.setDataHora(LocalDateTime.now());
+		error.setDataHora(OffsetDateTime.now());
 		error.setTitulo(ex.getMessage());
 		
 		return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);

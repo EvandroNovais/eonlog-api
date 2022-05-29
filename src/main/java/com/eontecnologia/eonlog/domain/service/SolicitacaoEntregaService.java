@@ -1,16 +1,14 @@
 package com.eontecnologia.eonlog.domain.service;
 
-import java.time.LocalDateTime;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.eontecnologia.eonlog.domain.model.Cliente;
 import com.eontecnologia.eonlog.domain.model.Entrega;
 import com.eontecnologia.eonlog.domain.model.StatusEntrega;
 import com.eontecnologia.eonlog.domain.repository.EntregaRepository;
-
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.OffsetDateTime;
 
 @AllArgsConstructor
 @Service
@@ -26,7 +24,7 @@ public class SolicitacaoEntregaService {
 		
 		entrega.setCliente(cliente);
 		entrega.setStatus(StatusEntrega.PENDENTE);
-		entrega.setDataPedido(LocalDateTime.now());
+		entrega.setDataPedido(OffsetDateTime.now());
 		
 		return entregaRepository.save(entrega);
 	}
