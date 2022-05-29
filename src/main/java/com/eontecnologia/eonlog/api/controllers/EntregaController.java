@@ -1,9 +1,13 @@
 package com.eontecnologia.eonlog.api.controllers;
 
+import com.eontecnologia.eonlog.api.model.DestinatarioModel;
+import com.eontecnologia.eonlog.api.model.EntregaModel;
 import com.eontecnologia.eonlog.domain.model.Entrega;
 import com.eontecnologia.eonlog.domain.repository.EntregaRepository;
 import com.eontecnologia.eonlog.domain.service.SolicitacaoEntregaService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +22,7 @@ public class EntregaController {
 
 	private EntregaRepository entregaRepository;
 	private SolicitacaoEntregaService solicitacaoEntregaService;
+	private ModelMapper modelMapper;
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -32,9 +37,12 @@ public class EntregaController {
 	}
 
 	@GetMapping("/{entregaId}")
-	public ResponseEntity<Entrega> buscar(@PathVariable Long entregaId){
+	public ResponseEntity<EntregaModel> buscar(@PathVariable Long entregaId){
 		return entregaRepository.findById(entregaId)
-				.map(ResponseEntity::ok)
+				.map(entrega -> {
+					EntregaModel entregaModel = modelMapper.map(entrega, EntregaModel.class);
+					return ResponseEntity.ok(entregaModel);
+				})
 				.orElse(ResponseEntity.notFound().build());
 	}
 }
